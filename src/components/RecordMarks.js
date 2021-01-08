@@ -10,6 +10,7 @@ class RecordMarks extends React.Component {
         maths: 0,
         physics: 0,
         chemistry: 0,
+        students: [],
     };
 
     createNewRecord = (student) => {
@@ -26,8 +27,35 @@ class RecordMarks extends React.Component {
         // console.log(student);
     };
 
+    // HANDLING CONCURRENT POST REQUEST FOR THE SAME STUDENT
+    updateStudent = (student) => {
+        fetch(
+            `https://sj-almabetter-challenge-api.herokuapp.com/api/students/${student.name}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(student),
+            }
+        );
+        // console.log(student);
+    };
+    // ----> HANDLING CONCURRENT POST REQUEST FOR THE SAME STUDENT <----
+
+    fetchStudents = () => {
+        fetch(
+            `https://sj-almabetter-challenge-api.herokuapp.com/api/students?sort=tota_desc`
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                this.setState({ students: data });
+            });
+    };
+
     // FORM VALIDATION
     validate = () => {
+        console.log(this.state.students);
         if (
             this.state.physics < 0 ||
             this.state.physics > 100 ||
@@ -50,6 +78,14 @@ class RecordMarks extends React.Component {
         if (this.state.roll_no === "") {
             Swal.fire("", "Roll Number cannot be empty!");
             return false;
+        }
+        if (
+            this.state.students.map(
+                (student) => student.name === this.state.name
+            )
+        ) {
+            this.updateStudent({ ...this.state });
+            return true;
         }
 
         return true;
@@ -83,6 +119,7 @@ class RecordMarks extends React.Component {
                 showConfirmButton: false,
                 timer: 2000,
             });
+            // if
             this.createNewRecord({ ...this.state });
             this.setState({
                 name: "",
