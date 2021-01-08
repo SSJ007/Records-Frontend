@@ -1,21 +1,12 @@
 import { AwesomeButton } from "react-awesome-button";
 import "react-awesome-button/dist/themes/theme-blue.css";
+import Header from "./Header";
 import "./Home.css";
 
 function Home() {
     return (
         <>
-            <h1
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    padding: "20px",
-                    fontWeight: "400",
-                    marginTop: 30,
-                }}
-            >
-                AlmaBetter Coding Challenge - Student Records
-            </h1>
+            <Header title={"Home"} />
             <div className="Home">
                 <AwesomeButton
                     href="record_marks"

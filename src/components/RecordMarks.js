@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 import Swal from "sweetalert2";
+import Header from "./Header";
 
 class RecordMarks extends React.Component {
     state = {
@@ -95,17 +96,8 @@ class RecordMarks extends React.Component {
     render() {
         return (
             <>
-                <h3
-                    style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        padding: "20px",
-                        fontWeight: "400",
-                        marginTop: 10,
-                    }}
-                >
-                    AlmaBetter Coding Challenge - Student Records
-                </h3>
+                <Header title={"Record Marks"} />
+
                 <form
                     onSubmit={this.handleSubmit}
                     style={{
@@ -190,7 +182,7 @@ class RecordMarks extends React.Component {
                         <button
                             type="submit"
                             className="btn btn-md btn-primary"
-                            style={{ marginTop: 30 }}
+                            style={{ marginTop: 30, marginLeft: 420 }}
                         >
                             Submit
                         </button>

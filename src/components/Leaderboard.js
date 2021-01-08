@@ -1,52 +1,12 @@
 import React from "react";
 import "react-awesome-button/dist/themes/theme-blue.css";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { MenuItem, FormControl, Select } from "@material-ui/core";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
+import { Button } from "@material-ui/core";
+
+import Header from "./Header";
+import DisplayTable from "./DisplayTable";
 
 function Leaderboard() {
-    // TABLE STYLING
-    const StyledTableCell = withStyles((theme) => ({
-        head: {
-            backgroundColor: theme.palette.common.black,
-            color: theme.palette.common.white,
-        },
-        body: {
-            fontSize: 14,
-        },
-    }))(TableCell);
-
-    const StyledTableRow = withStyles((theme) => ({
-        root: {
-            "&:nth-of-type(odd)": {
-                backgroundColor: theme.palette.action.hover,
-            },
-        },
-    }))(TableRow);
-
-    const useStyles = makeStyles((theme) => ({
-        root: {
-            minWidth: 275,
-        },
-        title: {
-            fontSize: 14,
-        },
-        pos: {
-            marginBottom: 12,
-        },
-        table: {
-            minWidth: 100,
-        },
-    }));
-    // ----> TABLE STYLING <-----
-
     const [students, setStudents] = React.useState([]);
     const [dropDown, setDropDown] = React.useState("name");
     const [sortBy, setSortBy] = React.useState("total_desc");
@@ -67,6 +27,7 @@ function Leaderboard() {
     );
     // -----> FETCH STUDENT LIST <-----
 
+    // 0.5s TIMER FOR DYNAMIC CLIENT SIDE SEARCH
     const Timer = (event) => {
         // console.log(event.target.value);
         setValue(event.target.value);
@@ -75,6 +36,7 @@ function Leaderboard() {
             onChange(event.target.value);
         }, 500);
     };
+    // -----> 0.5s TIMER FOR DYNAMIC CLIENT SIDE SEARCH <-----
 
     // SEARCH
     const onChange = async (value) => {
@@ -113,20 +75,10 @@ function Leaderboard() {
     };
     // -----> DROPDOWN SORT SELECTION <-----
 
-    const classes = useStyles();
     return (
         <>
-            <h3
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    padding: "20px",
-                    fontWeight: "400",
-                    marginTop: 10,
-                }}
-            >
-                AlmaBetter Coding Challenge - Student Records
-            </h3>
+            <Header title={"Leaderboard"} />
+
             <main>
                 <Button
                     href="record_marks"
@@ -151,6 +103,8 @@ function Leaderboard() {
                     Home
                 </Button>
             </main>
+
+            {/* SEARCH BAR */}
             <input
                 style={{
                     border: "1px solid #dc004e",
@@ -164,6 +118,9 @@ function Leaderboard() {
                 value={value}
                 onChange={Timer}
             />
+            {/* -----> SEARCH BAR <---- */}
+
+            {/* DROPDOWN SEARCH */}
             <FormControl
                 className="app__dropdown"
                 style={{ margin: "20px 900px 0px 20px", width: "300px" }}
@@ -182,7 +139,9 @@ function Leaderboard() {
                     <MenuItem value="roll">Search Across Roll no.</MenuItem>
                 </Select>
             </FormControl>
+            {/* ---> DROPDOWN SEARCH <---- */}
 
+            {/* SORT SELECTION */}
             <FormControl className="app__dropdown">
                 <Select
                     varient="outlined"
@@ -213,69 +172,11 @@ function Leaderboard() {
                     <MenuItem value="total_desc">Total: High to Low</MenuItem>
                 </Select>
             </FormControl>
+            {/* ----> SORT SELECTION <----- */}
 
-            <TableContainer
-                className="change"
-                component={Paper}
-                style={{
-                    marginTop: "30px",
-                    width: "80%",
-                    marginLeft: "150px",
-                }}
-            >
-                <Table
-                    id="change1"
-                    className={classes.table}
-                    aria-label="customized table"
-                >
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell>Name</StyledTableCell>
-                            <StyledTableCell>Roll Number</StyledTableCell>
-                            <StyledTableCell>Maths</StyledTableCell>
-                            <StyledTableCell>Physics</StyledTableCell>
-                            <StyledTableCell>Chemistry</StyledTableCell>
-                            <StyledTableCell>Total</StyledTableCell>
-                            <StyledTableCell>Percentage</StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {students.map((student) => (
-                            <StyledTableRow key={student.name}>
-                                <StyledTableCell>
-                                    {student.name}
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    {student.roll_no}
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    {student.maths}
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    {student.chemistry}
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    {student.physics}
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    {student.maths +
-                                        student.physics +
-                                        student.chemistry}
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    {(
-                                        (student.maths +
-                                            student.physics +
-                                            student.chemistry) /
-                                        3
-                                    ).toFixed(2)}
-                                    %
-                                </StyledTableCell>
-                            </StyledTableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            {/* LEADERBOARD */}
+            <DisplayTable students={students} />
+            {/* ----> LEADERBOARD <----- */}
         </>
     );
 }
